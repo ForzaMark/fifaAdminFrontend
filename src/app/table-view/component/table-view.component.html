@@ -1,0 +1,42 @@
+<div class="container margin-top-5">
+  <div class="card">
+    <div class="card-body">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Platzierung</th>
+            <th scope="col">Name</th>
+            <th scope="col">Punkte</th>
+            <th scope="col">Tore</th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let player of this.groups[0].players">
+          <tr>
+            <th scope="row">1</th>
+            <td>{{player.name}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+<div class="container mt-5">
+  <div class="card" *ngFor="let game of this.schedule"> 
+    <div class="card-body">
+      {{game}}
+      <button class="btn btn-warning">edit</button>
+      <input type="number" [(ngModel)]="homeGoals">
+      <input type="number" [(ngModel)]="awayGoals">
+      <button class="btn btn-primary" (click)="updateGame(homeGoals, awayGoals)"></button>
+    </div>
+  </div>
+</div>
+
+
+<input type='file' (change)="fileChanged($event)">
+<button class="btn btn-primary" (click)="loadFromText()"></button>
+<button class="btn btn-success" (click)="createTimeTableFromPlayers()"></button>
+<button class="btn btn-warning" (click)="getAllGames()"></button>
+<button class="btn btn-warning" (click)="postNewGame()"></button>

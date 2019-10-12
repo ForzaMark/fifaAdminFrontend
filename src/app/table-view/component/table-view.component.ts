@@ -9,7 +9,7 @@ import { Game } from '../types/Game.type';
 import { EditGameView } from '../types/EditGameView.type';
 
 enum groups {
-  Gruppe1,
+  Gruppe1 = 1,
   Gruppe2,
   Gruppe3,
   Gruppe4
@@ -51,10 +51,13 @@ export class TableViewComponent implements OnInit {
   });
 
   ngOnInit() {
+    this.showAllGamesOfGroup();
   }
 
   selectGroup(group: number) {
     this.selectedGroup = group;
+    this.playersOfGroup = [];
+    this.table = [];
     this.showAllGamesOfGroup();
   }
 
@@ -180,7 +183,7 @@ export class TableViewComponent implements OnInit {
       GroupId: this.selectedGroup
     };
     this.gameService.postNewGame(gameView).subscribe(
-      (next) => console.log('success')
+      (next) => this.showAllGamesOfGroup()
     );
   }
 
@@ -197,7 +200,6 @@ export class TableViewComponent implements OnInit {
       AwayGoals: this.editGameForm.controls.editAwayGoals.value,
       GroupId: this.selectedGroup
     };
-    console.log(gameView);
     
     this.gameService.updateGame(gameView).subscribe(
       (next) => {

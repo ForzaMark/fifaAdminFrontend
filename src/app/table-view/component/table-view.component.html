@@ -1,35 +1,62 @@
 <ul class="nav nav-tabs">
   <li class="nav-item">
-    <a class="nav-link active" (click)="selectGroup(0)">Gruppe1</a>
+    <a class="nav-link" (click)="selectGroup(1)">Gruppe1</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" (click)="selectGroup(1)">Gruppe2</a>
+    <a class="nav-link" (click)="selectGroup(2)">Gruppe2</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" (click)="selectGroup(2)">Gruppe3</a>
+    <a class="nav-link" (click)="selectGroup(3)">Gruppe3</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link disabled" (click)="selectGroup(3)">Gruppe4</a>
+    <a class="nav-link" (click)="selectGroup(4)">Gruppe4</a>
   </li>
 </ul>
 
+<div class="container margin-top-5" (click)="this.focusRow = undefined">
+    <div class="card">
+      <div class="card-header">Tabelle</div>
+      <div class="card-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Punkte</th>
+              <th scope="col">Tordifferenz</th>
+            </tr>
+          </thead>
+          <tbody *ngFor="let player of this.table">
+            <tr>
+              <td>{{player.name}}</td>
+              <td>{{player.points}}</td>
+              <td>{{player.goalsScored - player.goalsConceeded}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
 <div class="container margin-top-5 mb-5">
   <div class="card">
+    <div class="card-header">Neues Spiel eintragen</div>
     <div class="card-body">
-      <form [formGroup]="newGameForm" class="form-inline">
-        <div class="form-group">
-          <input type="text" class="form-control" id="exampleInputName2" placeholder="HomePlayer" formControlName="homePlayer">
+      <form [formGroup]="newGameForm" class="form-inline justify-content-center">
+        <div class="row justify-content-center">
+          <div class="form-group col-sm-">
+            <input type="text" class="form-control mr-1" placeholder="HomePlayer" formControlName="homePlayer">
+          </div>
+          <div class="form-group col-sm-">
+            <input type="number" class="form-control mr-1" placeholder="0" formControlName="homeGoals">
+          </div>
+          <div class="form-group col-sm-">
+            <input type="number" class="form-control mr-1" placeholder="0" formControlName="awayGoals">
+          </div>
+          <div class="form-group col-sm-">
+            <input type="text" class="form-control mr-1" placeholder="AwayPlayer" formControlName="awayPlayer">
+          </div>
+          <input type="submit" class="form-control btn btn-primary" (click)="postGame()" value="submit">
         </div>
-        <div class="form-group">
-          <input type="number" class="form-control" id="exampleInputName2" placeholder="0" formControlName="homeGoals">
-        </div>
-        <div class="form-group">
-          <input type="number" class="form-control" id="exampleInputName2" placeholder="0" formControlName="awayGoals">
-        </div>
-        <div class="form-group">
-          <input type="text" class="form-control" id="exampleInputEmail2" placeholder="AwayPlayer" formControlName="awayPlayer">
-        </div>
-        <button type="submit" class="btn btn-default" (click)="postGame()">Submit Result</button>
       </form>
     </div>
   </div>
@@ -39,7 +66,7 @@
   <div class="card">
     <div class="card-body">
       <div *ngFor="let game of this.games" (click)="setEditableFocus(game.id)">
-        <div *ngIf="game.id == this.focusRow">
+        <div *ngIf="game.id == this.focusRow" class="row">
           <form [formGroup]="editGameForm" class="form-inline">
             {{game.homePlayer}}
             <div class="form-group">
@@ -52,33 +79,17 @@
             <button type="submit" class="btn btn-default" (click)="editGame(game.id, game.homePlayer, game.awayPlayer)">Submit Result</button>
           </form>
         </div>
-        <div *ngIf="game.id != this.focusRow"> {{game.homePlayer}} {{game.homeGoals}} : {{game.awayGoals}} {{game.awayPlayer}}</div>
+        <div *ngIf="game.id != this.focusRow" class="row"> 
+          <div class="col-sm-3 text-center">{{game.homePlayer}}</div>
+          <div class="col-sm-2 text-center">{{game.homeGoals}}</div>
+          <div class="col-sm-1 text-center">:</div> 
+          <div class="col-sm-2 text-center">{{game.awayGoals}}</div> 
+          <div class="col-sm-3 text-center">{{game.awayPlayer}}</div>
+        </div>
+      
       </div>
     </div>
   </div>
 </div>
 
-<div class="container margin-top-5" (click)="this.focusRow = undefined">
-  <div class="card">
-    <div class="card-body">
-      <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">Platzierung</th>
-            <th scope="col">Name</th>
-            <th scope="col">Punkte</th>
-            <th scope="col">Tordifferenz</th>
-          </tr>
-        </thead>
-        <tbody *ngFor="let player of this.table">
-          <tr>
-            <th scope="row">1</th>
-            <td>{{player.name}}</td>
-            <td>{{player.points}}</td>
-            <td>{{player.goalsScored - player.goalsConceeded}}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
+

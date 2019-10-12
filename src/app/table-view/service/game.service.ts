@@ -9,8 +9,8 @@ export class GameService {
 
   constructor(private readonly http: HttpClient) { }
 
-  public getAllGames() {
-    return this.http.get<any[]>('/api/Game');
+  public getAllGamesOfGroup(groupId: number) {
+    return this.http.get<any[]>(`/api/Group/${groupId}/Games`);
   }
 
   public postNewGame(gameView: GameView) {

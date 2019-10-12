@@ -38,19 +38,29 @@
 <div class="container margin-top-5">
   <div class="card">
     <div class="card-body">
+      <p *ngFor="let game of this.games"> {{game.homePlayer}} {{game.homeGoals}} : {{game.awayGoals}} {{game.awayPlayer}}</p>
+    </div>
+  </div>
+</div>
+
+<div class="container margin-top-5">
+  <div class="card">
+    <div class="card-body">
       <table class="table">
         <thead>
           <tr>
             <th scope="col">Platzierung</th>
             <th scope="col">Name</th>
             <th scope="col">Punkte</th>
-            <th scope="col">Tore</th>
+            <th scope="col">Tordifferenz</th>
           </tr>
         </thead>
-        <tbody *ngFor>
+        <tbody *ngFor="let player of this.table">
           <tr>
             <th scope="row">1</th>
             <td>{{player.name}}</td>
+            <td>{{player.points}}</td>
+            <td>{{player.goalsScored - player.goalsConceeded}}</td>
           </tr>
         </tbody>
       </table>

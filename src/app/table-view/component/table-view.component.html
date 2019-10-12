@@ -38,12 +38,27 @@
 <div class="container margin-top-5">
   <div class="card">
     <div class="card-body">
-      <p *ngFor="let game of this.games"> {{game.homePlayer}} {{game.homeGoals}} : {{game.awayGoals}} {{game.awayPlayer}}</p>
+      <div *ngFor="let game of this.games" (click)="setEditableFocus(game.id)">
+        <div *ngIf="game.id == this.focusRow">
+          <form [formGroup]="editGameForm" class="form-inline">
+            {{game.homePlayer}}
+            <div class="form-group">
+              <input type="number" class="form-control" id="exampleInputName2" placeholder="0" formControlName="editHomeGoals">
+            </div>
+            <div class="form-group">
+              <input type="number" class="form-control" id="exampleInputName2" placeholder="0" formControlName="editAwayGoals">
+            </div>
+            {{game.awayPlayer}}
+            <button type="submit" class="btn btn-default" (click)="editGame(game.id, game.homePlayer, game.awayPlayer)">Submit Result</button>
+          </form>
+        </div>
+        <div *ngIf="game.id != this.focusRow"> {{game.homePlayer}} {{game.homeGoals}} : {{game.awayGoals}} {{game.awayPlayer}}</div>
+      </div>
     </div>
   </div>
 </div>
 
-<div class="container margin-top-5">
+<div class="container margin-top-5" (click)="this.focusRow = undefined">
   <div class="card">
     <div class="card-body">
       <table class="table">

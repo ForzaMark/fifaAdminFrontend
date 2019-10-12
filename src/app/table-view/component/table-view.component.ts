@@ -6,6 +6,7 @@ import { GameView } from '../types/GameView.type';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Player } from '../types/Player.type';
 import { Game } from '../types/Game.type';
+import { EditGameView } from '../types/EditGameView.type';
 
 enum groups {
   Gruppe1,
@@ -35,12 +36,18 @@ export class TableViewComponent implements OnInit {
   public games: Game[] = [];
   public playersOfGroup: Player[] = [];
   public table: Player[] = [];
+  public focusRow: number;
 
   public newGameForm = this.fb.group({
     homePlayer : ['', Validators.required],
     homeGoals : ['', Validators.required],
     awayPlayer: ['', Validators.required],
     awayGoals: ['', Validators.required]
+  });
+
+  public editGameForm = this.fb.group({
+    editHomeGoals : ['', Validators.required],
+    editAwayGoals : ['', Validators.required]
   });
 
   ngOnInit() {
@@ -177,17 +184,26 @@ export class TableViewComponent implements OnInit {
     );
   }
 
-  updateGame(homeGoals: number, awayGoals: number) {
-    const gameView: GameView = {
-      HomeName : 'Mark',
-      AwayName: 'Leon',
-      HomeGoals: homeGoals,
-      AwayGoals: awayGoals,
+  public setEditableFocus(gameId: number) {
+    this.focusRow = gameId;
+  }
+
+  editGame(gameId: number, homePlayer: string, awayPlayer: string) {
+    const gameView: EditGameView = {
+      Id: gameId,
+      HomeName : homePlayer,
+      AwayName: awayPlayer,
+      HomeGoals: this.editGameForm.controls.editHomeGoals.value,
+      AwayGoals: this.editGameForm.controls.editAwayGoals.value,
       GroupId: this.selectedGroup
     };
-    console.log(homeGoals);
+    console.log(gameView);
+    
     this.gameService.updateGame(gameView).subscribe(
-      (next) => console.log('success2')
+      (next) => {
+        this.focusRow = undefined;
+        this.showAllGamesOfGroup();
+      }
     );
   }
 

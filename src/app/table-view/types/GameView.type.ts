@@ -3,4 +3,5 @@ export interface GameView {
     AwayName: string;
     HomeGoals: number;
     AwayGoals: number;
+    GroupId: number;
 }

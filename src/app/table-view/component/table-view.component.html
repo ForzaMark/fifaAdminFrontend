@@ -1,3 +1,40 @@
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link active" (click)="selectGroup(0)">Gruppe1</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" (click)="selectGroup(1)">Gruppe2</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" (click)="selectGroup(2)">Gruppe3</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link disabled" (click)="selectGroup(3)">Gruppe4</a>
+  </li>
+</ul>
+
+<div class="container margin-top-5 mb-5">
+  <div class="card">
+    <div class="card-body">
+      <form [formGroup]="newGameForm" class="form-inline">
+        <div class="form-group">
+          <input type="text" class="form-control" id="exampleInputName2" placeholder="HomePlayer" formControlName="homePlayer">
+        </div>
+        <div class="form-group">
+          <input type="number" class="form-control" id="exampleInputName2" placeholder="0" formControlName="homeGoals">
+        </div>
+        <div class="form-group">
+          <input type="number" class="form-control" id="exampleInputName2" placeholder="0" formControlName="awayGoals">
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-control" id="exampleInputEmail2" placeholder="AwayPlayer" formControlName="awayPlayer">
+        </div>
+        <button type="submit" class="btn btn-default" (click)="postGame()">Submit Result</button>
+      </form>
+    </div>
+  </div>
+</div>
+
 <div class="container margin-top-5">
   <div class="card">
     <div class="card-body">
@@ -10,7 +47,7 @@
             <th scope="col">Tore</th>
           </tr>
         </thead>
-        <tbody *ngFor="let player of this.groups[0].players">
+        <tbody *ngFor>
           <tr>
             <th scope="row">1</th>
             <td>{{player.name}}</td>
@@ -20,23 +57,3 @@
     </div>
   </div>
 </div>
-
-
-<div class="container mt-5">
-  <div class="card" *ngFor="let game of this.schedule"> 
-    <div class="card-body">
-      {{game}}
-      <button class="btn btn-warning">edit</button>
-      <input type="number" [(ngModel)]="homeGoals">
-      <input type="number" [(ngModel)]="awayGoals">
-      <button class="btn btn-primary" (click)="updateGame(homeGoals, awayGoals)"></button>
-    </div>
-  </div>
-</div>
-
-
-<input type='file' (change)="fileChanged($event)">
-<button class="btn btn-primary" (click)="loadFromText()"></button>
-<button class="btn btn-success" (click)="createTimeTableFromPlayers()"></button>
-<button class="btn btn-warning" (click)="getAllGames()"></button>
-<button class="btn btn-warning" (click)="postNewGame()"></button>

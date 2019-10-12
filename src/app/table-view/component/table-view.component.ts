@@ -3,44 +3,44 @@ import { TableFileReaderService } from '../service/table-file-reader.service';
 import { Group } from '../types/Group.type';
 import { GameService } from '../service/game.service';
 import { GameView } from '../types/GameView.type';
+import { FormBuilder, Validators } from '@angular/forms';
+
+enum groups {
+  Gruppe1,
+  Gruppe2,
+  Gruppe3,
+  Gruppe4
+}
 
 @Component({
   selector: 'app-table-view',
   templateUrl: './table-view.component.html',
   styleUrls: ['./table-view.component.scss']
 })
+
 export class TableViewComponent implements OnInit {
 
   constructor(private readonly tableViewService: TableFileReaderService,
-              private readonly gameService: GameService) { }
+              private readonly gameService: GameService,
+              private readonly fb: FormBuilder) { }
 
+  private selectedGroup = groups.Gruppe1; 
   public groups: Group[] = [];
   public schedule: string[] = [];
+
+  public newGameForm = this.fb.group({
+    homePlayer : ['', Validators.required],
+    homeGoals : ['', Validators.required],
+    awayPlayer: ['', Validators.required],
+    awayGoals: ['', Validators.required]
+  });
 
   ngOnInit() {
   }
 
-  fileChanged(e: any) {
-    const file = e.target.files[0];
-    this.tableViewService.readFile(file);
-  }
-
-  loadFromText() {
-    this.groups = this.tableViewService.createGroupsFromFile();
-  }
-
-  createTimeTableFromPlayers() {
-    const firstGroup = this.groups[0];
-    const players = firstGroup.players;
-    const schedule: string[] = [];
-    for (let i = 0; i < players.length - 1; i++) {
-      for (let j = i; j < players.length - 1; j++) {
-        const pairing = players[i].name + ' : ' + players[j + 1].name;
-        schedule.push(pairing);
-        this.postGame(players[i].name, players[j + 1].name);
-      }
-    }
-    this.schedule = schedule;
+  selectGroup(group: number) {
+    this.selectedGroup = group;
+    console.log(this.selectedGroup)
   }
 
   getAllGames() {
@@ -49,13 +49,15 @@ export class TableViewComponent implements OnInit {
     );
   }
 
-  postGame(homeName: string, awayName: string) {
+  postGame() {
     const gameView: GameView = {
-      HomeName : homeName,
-      AwayName: awayName,
-      HomeGoals: 0,
-      AwayGoals: 0
+      HomeName : this.newGameForm.controls.homePlayer.value,
+      AwayName: this.newGameForm.controls.awayPlayer.value,
+      HomeGoals: this.newGameForm.controls.homeGoals.value,
+      AwayGoals: this.newGameForm.controls.awayGoals.value,
+      GroupId: this.selectedGroup
     };
+    console.log(gameView);
     this.gameService.postNewGame(gameView).subscribe(
       (next) => console.log('success')
     );
@@ -66,7 +68,8 @@ export class TableViewComponent implements OnInit {
       HomeName : 'Mark',
       AwayName: 'Leon',
       HomeGoals: homeGoals,
-      AwayGoals: awayGoals
+      AwayGoals: awayGoals,
+      GroupId: this.selectedGroup
     };
     console.log(homeGoals);
     this.gameService.updateGame(gameView).subscribe(

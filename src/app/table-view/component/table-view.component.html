@@ -64,31 +64,29 @@
 
 <div class="container margin-top-5">
   <div class="card">
+    <div class="card-header">Bisherige Spiele</div>
     <div class="card-body">
       <div *ngFor="let game of this.games" (click)="setEditableFocus(game.id)">
-        <div *ngIf="game.id == this.focusRow" class="row justify-content-center">
+        <div *ngIf="game.id == this.focusRow" class="row justify-content-center mb-3">
           <form [formGroup]="editGameForm" class="form-inline justify-content-center">
-            <div class=" form-group text-center col-sm-3">
-              {{game.homePlayer}}
-            </div>
-            <div class="form-group col-sm-2">
-              <input type="number" class="form-control form-width" placeholder="0" formControlName="editHomeGoals">
-            </div>
-            <div class="form-group text-center col-sm-1">
-              :
-            </div>
-            <div class="form-group col-sm-2">
-              <input type="number" class="form-control form-width" placeholder="0" formControlName="editAwayGoals">
-            </div>
-            <div class="form-group text-center col-sm-2">
-              {{game.awayPlayer}}
-            </div>
-            <div class="form-group col-sm-1">
-                <button type="submit" class="btn btn-primary" (click)="editGame(game.id, game.homePlayer, game.awayPlayer)">Submit</button>
+            <div class="row justify-content-center">
+              <div class="form-group col-sm-">
+                <input type="text" class="form-control mr-1" placeholder="HomePlayer" value="{{game.homePlayer}}" readonly>
+              </div>
+              <div class="form-group col-sm-">
+                <input type="number" class="form-control mr-1" placeholder="0" formControlName="editHomeGoals">
+              </div>
+              <div class="form-group col-sm-">
+                <input type="number" class="form-control mr-1" placeholder="0" formControlName="editAwayGoals">
+              </div>
+              <div class="form-group col-sm-">
+                <input type="text" class="form-control mr-1" placeholder="AwayPlayer" value="{{game.awayPlayer}}" readonly>
+              </div>
+              <input type="submit" class="form-control btn btn-success" (click)="editGame(game.id, game.homePlayer, game.awayPlayer)" value="submit">
             </div>
           </form>
         </div>
-        <div *ngIf="game.id != this.focusRow" class="row"> 
+        <div *ngIf="game.id != this.focusRow" class="row mb-3"> 
           <div class="col-sm-3 text-center">{{game.homePlayer}}</div>
           <div class="col-sm-2 text-center">{{game.homeGoals}}</div>
           <div class="col-sm-1 text-center">:</div> 
